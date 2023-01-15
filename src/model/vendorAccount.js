@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-
-const AdminSchema = mongoose.Schema({
+const vendorSchema = mongoose.Schema({
   phone: { type: String, required: true, unique: true },
   name: {
     type: String,
@@ -8,15 +7,11 @@ const AdminSchema = mongoose.Schema({
   email: {
     type: String,
   },
-
   password: {
     type: String,
-  },
-  confirmPassword: { type: String },
+  }, Password: { type: String },
   otp: { type: String },
   Token: { type: String },
 });
-
-const AdminModel = mongoose.model("customerProfile", AdminSchema);
-
-module.exports = AdminModel;
+const vendorModel = mongoose.model("vendorProfile", vendorSchema);
+module.exports = vendorModel;

@@ -1,5 +1,5 @@
 const express = require('express'); 
-const {populartourProfile,getpopulartour,Updatepopulartour,deletepopulartour} = require('../controller/popularTour');
+const {populartourProfile,getpopulartour,Updatepopulartour,deletepopulartour} = require('../controller/admin/popularTour');
 //const verifyAdmin = require('../middleware/isAdmin')
 //const verifyToken = require('../middleware/auth_check');
 

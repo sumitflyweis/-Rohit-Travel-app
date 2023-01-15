@@ -1,22 +1,30 @@
-//var bcrypt = require('bcrypt');
 const path = require('path'); 
 require('dotenv').config()
-//const jwt = require('jsonwebtoken');
-const Location = require('../model/searchByLocation')
+const Location = require('../../model/searchByhotel')
 
-exports.locationProfile = async(req,res ) => {
+exports.hotelProfile = async(req,res ) => {
     try{
     const data = {
         city : req.body.city, 
-        hotel: req.body.hotel
-        
+        hotel: req.body.hotel,
+        rating:req.body.rating,
+        reviews:req.body.reviews,
+        price:req.body.price
+     
     }
+    const alreadyregistered = await Location.findOne({ city: req.body.city, hotel: req.body.hotel ,rating:req.body.rating, reviews:req.body.reviews, price:req.body.price})
+ 
+if(!alreadyregistered || alreadyregistered.length==0){
+
     const locationData = await Location.create(data); 
     console.log(locationData); 
     res.status(200).json({
         id : locationData._id,
-        message : "Admin Account  Created ",data:locationData
+        message : "hotel  Created ",data:locationData
     })
+}else{ return res.status(200).json({
+msg:"already exists"})
+}
 }catch(err){
     console.log(err);
     res.status(400).send({message: err.message})
@@ -28,13 +36,16 @@ exports.locationProfile = async(req,res ) => {
 
 exports.gethotel = async(req,res) => {
     try {
-      
-    const  Allhotel = await Location.find({city:req.body.city});
-    if(Allhotel.length==0)return res.status(400).send({msg:"no hotel nearby"})
+    
+     const  Allhotel = await Location.find({_id:req.params.id}).select({hotel:1,_id:1})
+   
+    if(!Allhotel  || Allhotel.length==0){return res.status(400).send({msg:"no hotel nearby"})
+    }else{
     console.log(Allhotel);
     res.status(200).json({
         hotels : Allhotel
     })
+}
     }catch(err){
         console.log(err)
         res.status(400).json({
@@ -47,13 +58,13 @@ exports.gethotel = async(req,res) => {
 
 
 
-exports.Updatelocation = async(req,res) => {
+exports.Updatehotel = async(req,res) => {
     try{
    
     const UpdatedData = await Location.findOneAndUpdate({_id: req.params.id}, {
-        city : req.body.city, 
-        hotel: req.body.hotel,
-    }).exec();
+        $addToSet: { hotel: req.body.hotel , rating:req.body.rating,
+        reviews:req.body.reviews, price:req.body.price }}
+    ).exec();
     console.log(UpdatedData);
     res.status(200).send({
         message: "Admin Profile Updated ",data:UpdatedData
@@ -65,7 +76,7 @@ exports.Updatelocation = async(req,res) => {
 }
 }
 
-exports.deletelocation = async(req,res) => {
+exports.deletehotel = async(req,res) => {
     try {
     const id = req.params.id; 
     await Location.deleteOne({_id: id});
