@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 const objectId = mongoose.Schema.Types.ObjectId;
 
 const bookingSchema = mongoose.Schema({
-  start_date: { type: String },
-  end_date: { type: String },
+  start_date: { type: Date},
+  end_date: { type: Date},
   totalDays:{type:Number},
   price: { type: Number },
   discount:{type:Number},
+  DiscountedPrice:{type:Number},
   category:[{type:String}],
   touristDestination: { type:String},
   Status: {

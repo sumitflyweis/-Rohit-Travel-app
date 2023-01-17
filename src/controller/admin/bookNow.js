@@ -8,63 +8,44 @@ exports.bookingProfile = async (req, res) => {
     let {
       start_date,
       end_date,
-      totalDays,
+      DiscountedPrice,
       price,
       discount,
       category,
       touristDestination,
-      Status
-    } = req.body
+      Status,
+    } = req.body;
 
-    const bookingfind = await bookNow.find({ touristDestination:touristDestination,start_date:start_date,end_date:end_date,price:price})
-   // console.log(bookingfind);
+    const bookingfind = await bookNow.find({
+      touristDestination: touristDestination,
+      start_date: start_date,
+      end_date: end_date,
+      price: price,
+    });
+    // console.log(bookingfind);
+    DiscountedPrice=price-(discount/100)*price
     if (!bookingfind || bookingfind.length == 0) {
-      return res.status(400).send({ msg: "no data found" });
+      var b = moment(start_date, "DD/MM/YYYY HH:mm").toString();
+      var c = moment(end_date, "DD/MM/YYYY HH:mm").toString();
+      console.log(b + " " + c);
+      const bookNowData = await bookNow.create({
+        start_date: b,
+        end_date: c,
+        price: price,
+        discount: discount,
+        DiscountedPrice,
+        category: category,
+        touristDestination: touristDestination,
+        Status: Status,
+      });
+      console.log(bookNowData);
+      return res.status(200).json({
+        id: bookNowData._id,
+        message: "booking Created ",
+        data: bookNowData,
+      });
     } else {
-
-    const data=await bookingProfile.aggregate(
-            [
-               {
-                  $project:
-                     {
-                        Start: "$start_date",
-                        End: "$end_date",
-                       days:
-                           {
-                              $dateDiff:
-                                 {
-                                    startDate: "$start_date",
-                                    endDate: "$end_date",
-                                    unit: "day"
-                                 }
-                           },
-                        _id: 0
-                     }
-                }
-            ]
-          )
-
-          console.log(data)
-
-    //   var b = moment(start_date, "DD/MM/YYYY HH:mm").toString();
-    //   var c = moment(end_date, "DD/MM/YYYY HH:mm").toString();
-    //   console.log(b + " " + c);
-    //   const bookNowData = await bookNow.create({
-    //     start_date: b,
-    //     end_date: c,
-    //     totalDays:totalDays,
-    //     price:price,
-    //     discount:discount,
-    //     category:category,
-    //     touristDestination:touristDestination,
-    //     Status:Status
-    //   });
-    //   console.log(bookNowData);
-    //   return res.status(200).json({
-    //     id: bookNowData._id,
-    //     message: "booking Created ",
-    //     data: bookNowData,
-    //   });
+      return res.status(400).send({ msg: " data already present" });
     }
   } catch (err) {
     console.log(err);
@@ -76,6 +57,24 @@ exports.bookingProfile = async (req, res) => {
 //     try {
 //       const city=req.body.city
 //      const  Allhotel = await Location.find({city:req.body.city});
+
+// const data=await bookNow.aggregate([
+
+//     {$set: {
+//       totalDays: {
+//         $dateDiff: {
+//           startDate: {$toDate: "$start_date"},
+//           endDate: {$toDate: "$end_date"},
+//           unit: "day"
+//         }
+//       }
+//     }
+//   },
+//   // {$match: {hoursDiff: {$gte: 20}}}
+//   ]
+//         )
+
+//              console.log(data)
 
 //     if(!Allhotel  || Allhotel.length==0){return res.status(400).send({msg:"no hotel nearby"})
 //     }else{
