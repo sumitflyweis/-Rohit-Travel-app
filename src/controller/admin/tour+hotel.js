@@ -1,9 +1,9 @@
-const path = require("path");
-require("dotenv").config();
+// const path = require("path");
+// require("dotenv").config();
 //const tour2 = require("../../model/popularTour");
 //const hotel = require("../../model/searchByhotel");
-const tourHotel1 = require("../../model/tour+hotel");
-const tourHotel = require("../../model/story");
+// const tourHotel1 = require("../../model/tour+hotel");
+// const tourHotel = require("../../model/story");
 
 // exports.tourProfile = async (req, res) => {
 //   try {
@@ -30,68 +30,68 @@ const tourHotel = require("../../model/story");
 //   }
 // };
 
-exports.tourProfile = async (req, res) => {
-  try {
-    const title = req.body.title;
-    console.log(title)
-    const tourData = await tourHotel.create({title});
-    console.log(tourData);
-    return res.status(200).json({
-      id: tourData._id,
-      message: "tour selected ",
-      data: tourData,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).send({ message: err.message });
-  }
-};
+// exports.tourProfile = async (req, res) => {
+//   try {
+//     const title = req.body.title;
+//     console.log(title)
+//     const tourData = await tourHotel.create({title});
+//     console.log(tourData);
+//     return res.status(200).json({
+//       id: tourData._id,
+//       message: "tour selected ",
+//       data: tourData,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(400).send({ message: err.message });
+//   }
+// };
 
 
-exports.tourProfile1 = async (req, res) => {
-    try {
-     const data={ //  _id: req.body._id,
-        name: req.body.name,
-        age: req.body.age, 
-       stories: req.body.stories,
-     }
-    //  findOne({ title: 'Casino Royale' }).
-    //  populate('author').
-      const tourData = await tourHotel1.create(data)
-      console.log(tourData);
-      return res.status(200).json({
-        id: tourData._id,
-        message: "tour selected ",
-        data: tourData,
-      });
-    } catch (err) { 
-      console.log(err);
-      return res.status(400).send({ message: err.message });
-    }
-  };
+// exports.tourProfile1 = async (req, res) => {
+//     try {
+//      const data={ //  _id: req.body._id,
+//         name: req.body.name,
+//         age: req.body.age, 
+//        stories: req.body.stories,
+//      }
+//     //  findOne({ title: 'Casino Royale' }).
+//     //  populate('author').
+//       const tourData = await tourHotel1.create(data)
+//       console.log(tourData);
+//       return res.status(200).json({
+//         id: tourData._id,
+//         message: "tour selected ",
+//         data: tourData,
+//       });
+//     } catch (err) { 
+//       console.log(err);
+//       return res.status(400).send({ message: err.message });
+//     }
+//   };
 
 
 
 
-exports.gettour2 = async(req,res) => {
-    try {
-     const stories=req.body.stories
-    const  Allhotel = await tourHotel1.findOne({name:req.body.name}).populate("stories")
-    console.log(Allhotel)
-    if(!Allhotel || Allhotel.length==0){return res.status(401).send({message: "no hotels found or no data in db "})
-    }else{
-        return res.status(200).json({
-            data: [Allhotel]
-        })
-    }
+// exports.gettour2 = async(req,res) => {
+//     try {
+//      const stories=req.body.stories
+//     const  Allhotel = await tourHotel1.findOne({name:req.body.name}).populate("stories")
+//     console.log(Allhotel)
+//     if(!Allhotel || Allhotel.length==0){return res.status(401).send({message: "no hotels found or no data in db "})
+//     }else{
+//         return res.status(200).json({
+//             data: [Allhotel]
+//         })
+//     }
 
-    }catch(err){
-        console.log(err)
-        res.status(400).json({
-            message : err.message
-        })
-    }
-}
+//     }catch(err){
+//         console.log(err)
+//         res.status(400).json({
+//             message : err.message
+//         })
+//     }
+// }
 
 
 

@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const SECRET = "demo@1234";
-const customerModel = require("../src/model/vendorAccount");
+const vendorModel = require("../src/model/vendorAccount");
+const customerModel = require("../src/model/CustomerAccount");
 //const customerModel = require("../src/model/");
 
 // =======================================================AUTHENTICATION==============================================
@@ -58,6 +59,7 @@ const authorisationbyBId = async function (req, res, next) {
   try {
     let id = req.params.id;
     let decodedtoken = req.token;
+    
    
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ status: false, message: "Invalid userId" });
@@ -66,7 +68,7 @@ const authorisationbyBId = async function (req, res, next) {
     let userData = await customerModel.findById({ _id: id });
     console.log(userData);
     console.log(userData._id.toString());
-    console.log(decodedtoken._id);
+    console.log(decodedtoken.userId);
 
     if (!userData) {
       return res
@@ -74,7 +76,7 @@ const authorisationbyBId = async function (req, res, next) {
         .send({ status: false, message: "No userexists with that id" });
     }
 
-    if (decodedtoken._id !== userData._id.toString()) {
+    if (decodedtoken.userId !== userData._id.toString()) {
       return res
         .status(403)
         .send({ status: false, message: "You are not a authorized user" });
@@ -85,7 +87,43 @@ const authorisationbyBId = async function (req, res, next) {
   }
 };
 
-// ==============================================================================================================================
+// ====================================================AUTHORISATION BY VENDOR==========================================================================
 
+
+const authorisationbyBId_VENDOR = async function (req, res, next) {
+  try {
+    let id = req.params.id;
+    let decodedtoken = req.token;
+    
+   
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({ status: false, message: "Invalid userId" });
+    }
+
+    let userData = await vendorModel.findById({ _id: id });
+    console.log(userData);
+    console.log(userData._id.toString());
+    console.log(decodedtoken.userId);
+
+    if (!userData) {
+      return res
+        .status(404)
+        .send({ status: false, message: "No userexists with that id" });
+    }
+
+    if (decodedtoken.userId !== userData._id.toString()) {
+      return res
+        .status(403)
+        .send({ status: false, message: "You are not a authorized user" });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).send({ status: false, msg: error.message });
+  }
+};
+
+
+
+//=========================================================================================
 //exporting functions
-module.exports = { authentication, /*authorisation,*/ authorisationbyBId };
+module.exports = { authentication, /*authorisation,*/ authorisationbyBId,authorisationbyBId_VENDOR };

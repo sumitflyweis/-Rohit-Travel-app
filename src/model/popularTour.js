@@ -4,7 +4,7 @@ const objectId=mongoose.Schema.Types.ObjectId
 const tourSchema   = mongoose.Schema({
     country:{type:String},
     city: { type: String },
-    touristDestination:{type:String},
+    touristDestination:[{type:String}],
     rating:{type:String},
 
   

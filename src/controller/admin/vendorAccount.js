@@ -4,10 +4,9 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const vendorSchema = require("../../model/vendorAccount");
 const newOTP = require("otp-generator");
-
 const SECRET = "demo@1234";
 
-exports.VendorloginProfile = async (req, res) => {
+exports.VendorloginProfile1 = async (req, res) => {
   try {
     const vendorexists = await vendorSchema.findOne({ phone: req.body.phone });
     console.log(vendorexists);
@@ -70,7 +69,7 @@ exports.VendorloginProfile = async (req, res) => {
   }
 };
 
-exports.VendorProfile = async (req, res) => {
+exports.VendorProfile1 = async (req, res) => {
   try {
     const data = {
       name: req.body.name,
@@ -114,7 +113,9 @@ exports.VendorProfile = async (req, res) => {
   }
 };
 
-exports.VendorUpdate = async (req, res) => {
+
+
+exports.VendorUpdate1= async (req, res) => {
   try {
     const UpdatedData = await vendorSchema
       .findOneAndUpdate(
@@ -136,7 +137,9 @@ exports.VendorUpdate = async (req, res) => {
   }
 };
 
-exports.VendorAllUsers = async (req, res) => {
+
+
+exports.VendorAllUsers1 = async (req, res) => {
   try {
     const Allusers = await vendorSchema.find();
   return  res.status(200).json({
@@ -147,5 +150,36 @@ exports.VendorAllUsers = async (req, res) => {
   return  res.status(400).json({
       message: err.message,
     });
+  }
+};
+
+
+
+exports.VendorgetbyId1 = async (req, res) => {
+  try {
+    const getvendor = await vendorSchema.findById({_id:req.params.id});
+    if(!getvendor || getvendor.length == 0) {
+      return res.status(404).send({ message: "no data found" });
+    }else{
+  return  res.status(200).json({
+      data: getvendor,
+    });
+  }
+ } catch (err) {
+    console.log(err);
+  return  res.status(400).json({
+      message: err.message,
+    });
+  }
+};
+
+exports.deleteVendorAdmin = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await vendorSchema.deleteOne({ _id: id });
+  return  res.status(200).send({ message: "data deleted " });
+  } catch (err) {
+    console.log(err);
+  return  res.status(400).send({ message: err.message });
   }
 };

@@ -149,3 +149,36 @@ exports.VendorAllUsers = async (req, res) => {
     });
   }
 };
+
+
+exports.VendorgetbyId = async (req, res) => {
+  try {
+    const getvendor = await vendorSchema.findById({_id:req.params.id});
+    if(!getvendor || getvendor.length == 0) {
+      return res.status(404).send({ message: "no data found" });
+    }else{
+  return  res.status(200).json({
+      data: getvendor,
+    });
+  }
+ } catch (err) {
+    console.log(err);
+  return  res.status(400).json({
+      message: err.message,
+    });
+  }
+};
+
+
+
+exports.deleteVendor = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await vendorSchema.deleteOne({ _id: id });
+  return  res.status(200).send({ message: "data deleted " });
+  } catch (err) {
+    console.log(err);
+  return  res.status(400).send({ message: err.message });
+  }
+};
+

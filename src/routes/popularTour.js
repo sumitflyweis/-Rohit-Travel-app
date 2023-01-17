@@ -1,14 +1,23 @@
 const express = require('express'); 
-const {populartourProfile,getpopulartour,Updatepopulartour,deletepopulartour} = require('../controller/admin/popularTour');
-//const verifyAdmin = require('../middleware/isAdmin')
-//const verifyToken = require('../middleware/auth_check');
+const {populartourProfileVendor,getpopulartourVendor,UpdatepopulartourVendor,deletepopulartourVendor} = require('../controller/vendor/popularTour');
+const {populartourProfile1,getpopulartour1,getpopulartour1ById,Updatepopulartour1,deletepopulartour1} = require('../controller/admin/popularTour');
+
 
 const populartourRouter = express.Router();
  
+// //VENDOR
+populartourRouter.post('/populartourVendor', populartourProfileVendor);
+populartourRouter.get('/getpopulartourVendor/:touristDestination',getpopulartourVendor);
+populartourRouter.put('/UpdatepopulartourVendor/:id',UpdatepopulartourVendor);
+populartourRouter.delete('/deletepopulartourVendor/:id',deletepopulartourVendor);
 
-populartourRouter.post('/populartourProfile', populartourProfile);
-populartourRouter.get('/getpopulartour',getpopulartour);
-populartourRouter.put('/Updatepopulartour/:id',Updatepopulartour);
-populartourRouter.delete('/deletepopulartour/:id',deletepopulartour);
+// // ADMIN
+
+populartourRouter.post('/populartourProfile1', populartourProfile1);
+populartourRouter.get('/getpopulartour1',getpopulartour1);
+populartourRouter.get('/getpopulartour1ById/:id',getpopulartour1ById);
+populartourRouter.put('/Updatepopulartour1/:id',Updatepopulartour1);
+populartourRouter.delete('/deletepopulartour1/:id',deletepopulartour1);
+
 
 module.exports = populartourRouter;

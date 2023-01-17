@@ -134,6 +134,10 @@ exports.customerUpdate1 = async (req, res) => {
   }
 };
 
+
+
+
+
 exports.AllUsers1 = async (req, res) => {
   try {
     const Allusers = await userSchema.find();
@@ -147,3 +151,31 @@ exports.AllUsers1 = async (req, res) => {
     });
   }
 };
+
+
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await userSchema.find({_id:req.params.id})
+  return  res.status(200).json({
+      User: user,
+    });
+  } catch (err) {
+    console.log(err);
+  return  res.status(400).json({
+      message: err.message,
+    });
+  }
+};
+
+
+exports.deleteUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await userSchema.deleteOne({ _id: id });
+  return  res.status(200).send({ message: "data deleted " });
+  } catch (err) {
+    console.log(err);
+  return  res.status(400).send({ message: err.message });
+  }
+};
+

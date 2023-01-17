@@ -2,7 +2,7 @@ const path = require("path");
 require("dotenv").config();
 const tour = require("../../model/popularTour");
 
-exports.populartourProfile1 = async (req, res) => {
+exports.populartourProfileVendor = async (req, res) => {
   try {
     const country = req.body.country;
     const city = req.body.city;
@@ -37,10 +37,10 @@ exports.populartourProfile1 = async (req, res) => {
   }
 };
 
-exports.getpopulartour1 = async (req, res) => {
+exports.getpopulartourVendor = async (req, res) => {
   try {
     const getpopulardestination = await tour
-      .find({ touristDestination: req.body.touristDestination })
+      .find({ touristDestination: req.params.touristDestination })
       .select({ country: 1, city: 1, touristDestination: 1, _id: 0 });
     console.log(getpopulardestination);
     if (!getpopulardestination || getpopulardestination.length == 0) {
@@ -60,34 +60,7 @@ exports.getpopulartour1 = async (req, res) => {
   }
 };
 
-
-
-exports.getpopulartour1ById = async (req, res) => {
-    try {
-      const getpopulardestination = await tour
-        .findById({ _id:req.params.id })
-        .select({ country: 1, city: 1, touristDestination: 1, _id: 0 });
-      console.log(getpopulardestination);
-      if (!getpopulardestination || getpopulardestination.length == 0) {
-        return res
-          .status(401)
-          .send({ message: "no data is present in the database" });
-      } else {
-        return res.status(200).json({
-          getpopulardestination,
-        });
-      }
-    } catch (err) {
-      console.log(err);
-    return  res.status(400).json({
-        message: err.message,
-      });
-    }
-  };
-
- // { $addToSet: { <field1>: <value1>, ... } }
-
-exports.Updatepopulartour1 = async (req, res) => {
+exports.UpdatepopulartourVendor = async (req, res) => {
   try {
     const UpdatedData = await tour
       .findOneAndUpdate(
@@ -109,7 +82,7 @@ exports.Updatepopulartour1 = async (req, res) => {
   }
 };
 
-exports.deletepopulartour1 = async (req, res) => {
+exports.deletepopulartourVendor = async (req, res) => {
   try {
     const id = req.params.id;
     await populartour.deleteOne({ _id: id });

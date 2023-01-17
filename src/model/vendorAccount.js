@@ -9,7 +9,8 @@ const vendorSchema = mongoose.Schema({
   },
   password: {
     type: String,
-  }, Password: { type: String },
+  },
+  confirmPassword: { type: String },
   otp: { type: String },
   Token: { type: String },
 });

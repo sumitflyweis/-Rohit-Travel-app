@@ -125,13 +125,13 @@ exports.customerUpdateAdmin = async (req, res) => {
       )
       .exec();
     console.log(UpdatedData);
-    res.status(200).send({
+  return   res.status(200).send({
       message: "user Profile Updated ",
       data: UpdatedData,
     });
   } catch (err) {
     console.log(err);
-    res.status(400).send({ message: err.message });
+  return  res.status(400).send({ message: err.message });
   }
 };
 
@@ -151,7 +151,8 @@ exports.AllUsersAdmin = async (req, res) => {
 
 exports.getUserByIdAdmin = async (req, res) => {
     try {
-      const user = await userSchema.find({_id: req.params.id});
+      const user = await userSchema.findById({_id: req.params.id});
+      console.log(user);
       if(!user) {
         return res.status(404).send({ message: "User not found"})
       }else{
