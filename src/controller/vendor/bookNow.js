@@ -4,57 +4,7 @@ const bookNow = require("../../model/bookNow");
 const tour = require("../../model/popularTour");
 const moment = require("moment");
 
-exports.bookingProfile = async (req, res) => {
-  try {
-    let {
-      start_date,
-      end_date,
-      DiscountedPrice,
-      price,
-      discount,
-      Activity,
-      Booked,
-      touristDestination,
-      Status,
-    } = req.body;
-
-
-    const bookingfind = await bookNow.find({
-      start_date:start_date,end_date:end_date,touristDestination:touristDestination
-    });
-
-    if (!bookingfind || bookingfind.length == 0) {
-      var b = moment(start_date, "DD/MM/YYYY HH:mm").toString();
-      var c = moment(end_date, "DD/MM/YYYY HH:mm").toString();
-      console.log(b + " " + c);
-      DiscountedPrice = price - (discount / 100) * price;
-      const bookNowData = await bookNow.create({
-        start_date: b,
-        end_date: c,
-        price: price,
-        discount: discount,
-        DiscountedPrice,
-        Activity: Activity,
-        touristDestination: touristDestination,
-        Booked:Booked,
-        Status: Status,
-      });
-      console.log(bookNowData);
-      return res.status(200).json({
-        id: bookNowData._id,
-        message: "booking Created ",
-        data: bookNowData,
-      });
-    } else {
-      return res.status(400).send({ msg: " booking already present" });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(400).send({ message: err.message });
-  }
-};
-
-exports.getbooking = async(req,res) => {
+exports.getbookingVENDOR = async(req,res) => {
     try {
   const GetBooking=await bookNow.find()
 
@@ -90,7 +40,7 @@ const data=await bookNow.aggregate([
 
 
 
-exports.getbookingById = async(req,res) => {
+exports.getbookingByIdVENDOR = async(req,res) => {
   try {
 const GetBooking=await bookNow.find({_id:req.params.id})
 
@@ -125,7 +75,7 @@ return   res.status(200).json({
 }
 
 
-exports.Updatebooking = async(req,res) => {
+exports.UpdatebookingVENDOR = async(req,res) => {
     try{
       
       const data=await bookNow.findById({_id: req.params.id})
@@ -163,7 +113,7 @@ exports.Updatebooking = async(req,res) => {
 }
 }
 
-exports.deletebooking = async(req,res) => {
+exports.deletebookingVENDOR = async(req,res) => {
     try {
     const id = req.params.id;
     await bookNow.deleteOne({_id: id});

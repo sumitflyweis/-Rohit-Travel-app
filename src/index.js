@@ -33,7 +33,7 @@ mongoose
 
 app.use("/customerRouter", customerRouter);
 app.use("/vendorRouter", vendorRouter);
- app.use("/enquiryRouter", enquiryRouter);
+app.use("/enquiryRouter", enquiryRouter);
 app.use("/populartourRouter", populartourRouter);
 app.use("/booknowRouter", booknowRouter);
 // app.use("/notificationRouter", notificationRouter);
