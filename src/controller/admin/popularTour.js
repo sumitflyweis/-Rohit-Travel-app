@@ -2,40 +2,40 @@ const path = require("path");
 require("dotenv").config();
 const tour = require("../../model/popularTour");
 
-exports.populartourProfile1 = async (req, res) => {
-  try {
-    const country = req.body.country;
-    const city = req.body.city;
-    const touristDestination = req.body.touristDestination;
+// exports.populartourProfile1 = async (req, res) => {
+//   try {
+//     const country = req.body.country;
+//     const city = req.body.city;
+//     const touristDestination = req.body.touristDestination;
 
-    const tourdestination = await tour
-      .findOne({
-        touristDestination: touristDestination,
-      })
-      .select({ country: 1, city: 1, touristDestination: 1, _id: 0 });
-    console.log(tourdestination);
+//     const tourdestination = await tour
+//       .findOne({
+//         touristDestination: touristDestination,
+//       })
+//       .select({ country: 1, city: 1, touristDestination: 1, _id: 0 });
+//     console.log(tourdestination);
 
-    if (tourdestination) {
-      return res.status(200).json("already exists");
-    } else {
-      const tourData = await tour.create({
-        country: country,
-        city: city,
-        touristDestination: touristDestination,
-      });
+//     if (tourdestination) {
+//       return res.status(200).json("already exists");
+//     } else {
+//       const tourData = await tour.create({
+//         country: country,
+//         city: city,
+//         touristDestination: touristDestination,
+//       });
 
-      console.log(tourData);
-    return  res.status(200).json({
-        id: tourData._id,
-        message: "tour selected ",
-        data: tourData,
-      });
-    }
-  } catch (err) {
-    console.log(err);
-  return  res.status(400).send({ message: err.message });
-  }
-};
+//       console.log(tourData);
+//     return  res.status(200).json({
+//         id: tourData._id,
+//         message: "tour selected ",
+//         data: tourData,
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   return  res.status(400).send({ message: err.message });
+//   }
+// };
 
 exports.getpopulartour1 = async (req, res) => {
   try {

@@ -13,7 +13,7 @@ populartourRouter.delete('/deletepopulartourVendor/:id',deletepopulartourVendor)
 
 // // ADMIN
 
-populartourRouter.post('/populartourProfile1', populartourProfile1);
+//populartourRouter.post('/populartourProfile1', populartourProfile1);
 populartourRouter.get('/getpopulartour1',getpopulartour1);
 populartourRouter.get('/getpopulartour1ById/:id',getpopulartour1ById);
 populartourRouter.put('/Updatepopulartour1/:id',Updatepopulartour1);

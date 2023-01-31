@@ -1,23 +1,26 @@
 const express = require('express');
-const {bookingProfile,getbooking,getbookingById,Updatebooking,deletebooking} = require('../controller/admin/bookNow');
-const {bookingProfileuser} = require('../controller/user/bookNow');
-const {getbookingVENDOR,getbookingByIdVENDOR,UpdatebookingVENDOR,deletebookingVENDOR} = require('../controller/vendor/bookNow');
+const {getbookByAdmin,UpdatebookingByAdmin,deletebookingByAdmin,Updatebooking,deletebooking} = require('../controller/admin/bookNow');
+const {bookingProfileByUser,UpdatebookingByUser} = require('../controller/user/bookNow');
+const {getbookByVendor,UpdatebookingByVendor,deletebookingByVendor} = require('../controller/vendor/booknow');
 
 const booknowRouter = express.Router();
+
 //ADMIN
-booknowRouter.post('/createbook', bookingProfile);
-booknowRouter.get('/getbook',getbooking);
-booknowRouter.get('/getbookbyId/:id',getbookingById);
-booknowRouter.put('/updatebook/:id',Updatebooking);
-booknowRouter.delete('/deletebook/:id',deletebooking);
+booknowRouter.get('/getbookByAdmin', getbookByAdmin);
+// booknowRouter.get('/getbook',getbooking);
+// booknowRouter.get('/getbookbyId/:id',getbookingById);
+booknowRouter.put('/UpdatebookingByAdmin/:id',UpdatebookingByAdmin);
+ booknowRouter.delete('/deletebookingByAdmin/:id',deletebookingByAdmin);
 
 //USER
-booknowRouter.post('/createbookuser', bookingProfileuser);
+booknowRouter.post('/bookingProfileByUser', bookingProfileByUser);//UpdatebookingByUser
+// booknowRouter.put('/UpdatebookingByUser', UpdatebookingByUser);
 
 //VENDOR
-booknowRouter.get('/getbookVENDOR',getbookingVENDOR);
-booknowRouter.get('/getbookbyIdVENDOR/:id',getbookingByIdVENDOR);
-booknowRouter.put('/updatebookVENDOR/:id',UpdatebookingVENDOR);
-booknowRouter.delete('/deletebookVENDOR/:id',deletebookingVENDOR);
+booknowRouter.get('/getbookByVendor/:vendorId',getbookByVendor);
+// booknowRouter.get('/getbookbyId/:id',getbookingById);
+booknowRouter.put('/UpdatebookingByVendor/:id',UpdatebookingByVendor);
+booknowRouter.delete('/deletebookingByVendor/:id',deletebookingByVendor);
+
 
  module.exports = booknowRouter;

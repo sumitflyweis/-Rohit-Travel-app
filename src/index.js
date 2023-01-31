@@ -7,11 +7,11 @@ const bodyparser = require("body-parser");
 
 const customerRouter = require("./routes/CustomerAccount");
 const vendorRouter = require("./routes/vendorAccount");
- const enquiryRouter=require("./routes/enquiryform")
+const enquiryRouter = require("./routes/enquiryform");
 const populartourRouter = require("./routes/popularTour");
 const booknowRouter = require("./routes/bookNow");
-// const notificationRouter = require("./routes/pushnotification");
-
+const paymentRouter = require("./routes/payment");
+const notificationRouter = require("./routes/pushnotification");
 
 require("dotenv").config();
 
@@ -30,15 +30,13 @@ mongoose
     console.log(err);
   });
 
-
 app.use("/customerRouter", customerRouter);
 app.use("/vendorRouter", vendorRouter);
 app.use("/enquiryRouter", enquiryRouter);
 app.use("/populartourRouter", populartourRouter);
 app.use("/booknowRouter", booknowRouter);
-// app.use("/notificationRouter", notificationRouter);
-
-
+app.use("/notificationRouter", notificationRouter);
+app.use("/paymentRouter", paymentRouter);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
