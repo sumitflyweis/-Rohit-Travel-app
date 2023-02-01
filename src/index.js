@@ -37,6 +37,7 @@ app.use("/populartourRouter", populartourRouter);
 app.use("/booknowRouter", booknowRouter);
 app.use("/notificationRouter", notificationRouter);
 app.use("/paymentRouter", paymentRouter);
+//app.use("/paymentRouter", paymentRouter);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
