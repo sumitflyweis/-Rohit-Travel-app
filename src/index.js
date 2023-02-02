@@ -12,6 +12,7 @@ const populartourRouter = require("./routes/popularTour");
 const booknowRouter = require("./routes/bookNow");
 const paymentRouter = require("./routes/payment");
 const notificationRouter = require("./routes/pushnotification");
+//const serverless = require("serverless-http");
 
 require("dotenv").config();
 
@@ -29,7 +30,9 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
+// app.get("/home", (req, res) => {
+//   res.status(200).send("Woking App");
+// });
 app.use("/customerRouter", customerRouter);
 app.use("/vendorRouter", vendorRouter);
 app.use("/enquiryRouter", enquiryRouter);
@@ -42,3 +45,7 @@ app.use("/paymentRouter", paymentRouter);
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
+
+// module.exports = {
+//   handler: serverless(app),
+// };
