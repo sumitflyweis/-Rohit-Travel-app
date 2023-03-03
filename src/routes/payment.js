@@ -1,25 +1,28 @@
 const express = require('express');
-const {bookingProfile,getbooking,getbookingById,Updatebooking,deletebooking} = require('../controller/admin/bookNow');
+const {getAllpayment,getbooking,getbookingById,Updatebooking,deletebooking} = require('../controller/admin/payment');
 const {bookingProfileByUser} = require('../controller/user/bookNow');
-const {getbookByVendor,UpdatebookingByVendor} = require('../controller/vendor/booknow');
-const {CreatePaymentOrder,GetPaymentsByUserId} = require('../controller/user/payment');
+const {UpdatebookingByVendor} = require('../controller/vendor/booknow');
+const {CreatePaymentOrder,GetPaymentsByUserId,GetAllPayments} = require('../controller/user/payment');
+const {getAllpaymentByvendor} = require('../controller/vendor/payments');
 
 
 const paymentRouter = express.Router();
 
 //ADMIN
 // booknowRouter.post('/createbook', bookingProfile);
-// booknowRouter.get('/getbook',getbooking);
-// booknowRouter.get('/getbookbyId/:id',getbookingById);
+paymentRouter.get('/getAllpayment',getAllpayment);
+// paymentRouter.get('/getbookbyId/:id',getbookingById);
 // booknowRouter.put('/updatebook/:id',Updatebooking);
 // booknowRouter.delete('/deletebook/:id',deletebooking);
 
 //USER
 paymentRouter.get('/GetPaymentsByUserId/:user', GetPaymentsByUserId);
 paymentRouter.post('/CreatePaymentOrder/:id',CreatePaymentOrder);
+paymentRouter.get('/GetAllPayments',GetAllPayments);
+
 
 //VENDOR
-// booknowRouter.get('/getbookByVendor',getbookByVendor);
+paymentRouter.get('/getAllpaymentByvendor/:vendor',getAllpaymentByvendor);
 // booknowRouter.get('/getbookbyId/:id',getbookingById);
 // booknowRouter.put('/UpdatebookingByVendor/:id',UpdatebookingByVendor);
 // booknowRouter.delete('/deletebook/:id',deletebooking);

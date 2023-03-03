@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 const AdminSchema = mongoose.Schema({
-  phone: { type: String, required: true, unique: true },
+  phone: { type: String, unique: true },
+  google_id:{type:String},
   name: {
     type: String,
   },
@@ -15,6 +16,7 @@ const AdminSchema = mongoose.Schema({
   confirmPassword: { type: String },
   otp: { type: String },
   Token: { type: String },
+  profileImage :{type:String}
 });
 
 const AdminModel = mongoose.model("customerProfile", AdminSchema);

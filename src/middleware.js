@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const SECRET = "demo@1234";
+//const SECRET = "demo@1234";
 const vendorModel = require("../src/model/vendorAccount");
 const customerModel = require("../src/model/CustomerAccount");
 //const customerModel = require("../src/model/");
@@ -10,13 +10,14 @@ const customerModel = require("../src/model/CustomerAccount");
 const authentication = (req, res, next) => {
   try {
     let token = req.headers["x-api-key"]
+    console.log("token: " + token)
     if (!token)
       return res.status(401).send({ status: false, msg: "token is required" })
-    jwt.verify(token, SECRET, function (error, decoded) {
+    jwt.verify(token, process.env.KEY, function (error, decoded) {
       if (error) {
         return res.status(401).send({ status: false, msg: error.message })
       } else {
-        //console.log(decoded)
+        console.log(decoded)
         req.token = decoded
         next()
       }
@@ -59,16 +60,16 @@ const authorisationbyBId = async function (req, res, next) {
   try {
     let id = req.params.id;
     let decodedtoken = req.token;
+    console.log(decodedtoken)
     
-   
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ status: false, message: "Invalid userId" });
     }
 
     let userData = await customerModel.findById({ _id: id });
-    console.log(userData);
-    console.log(userData._id.toString());
-    console.log(decodedtoken.userId);
+     //console.log(userData);
+     console.log(userData._id.toString());
+     console.log(decodedtoken.id.toString());
 
     if (!userData) {
       return res
@@ -76,7 +77,9 @@ const authorisationbyBId = async function (req, res, next) {
         .send({ status: false, message: "No userexists with that id" });
     }
 
-    if (decodedtoken.userId !== userData._id.toString()) {
+    const str1 = userData._id.toString()
+    const str2 = decodedtoken.id.toString()
+    if (str1 !== str2) {
       return res
         .status(403)
         .send({ status: false, message: "You are not a authorized user" });

@@ -5,38 +5,37 @@ const moment = require("moment");
 
 exports.getbookByVendor = async (req, res) => {
   try {
-    const Allbooking = await bookNow.find({vendorId:req.params.vendorId})
-  console.log(Allbooking.vendorId)
+    const Allbooking = await bookNow.find({ vendorId: req.params.vendorId });
+    console.log(Allbooking);
 
-    if (!Allbooking || Allbooking.length == 0) {
+    if (!Allbooking || Allbooking.length == 0)
       return res.status(400).send({ msg: "no booking found" });
-    } else {
-      const NumberOfDays = await bookNow.aggregate([
-       
-     //   {$match:{ vendorId:'$req.params.vendorId'}},
+    // } else {
+    // const NumberOfDays = await bookNow.aggregate([
 
-   
-        {
-          $set: {
-            totalDays: {
-              $dateDiff: {
-                startDate: { $toDate: "$start_date" },
-                endDate: { $toDate: "$end_date" },
-                unit: "day",
-              },
-            },
-          },
-        },
-      ]);
-    
-   //   console.log(NumberOfDays);
-   
-       return res.status(201).send({   NumberOfDays,      } );
-      
-    }
+    //   {$match:{ vendorId:'$req.params.vendorId'}},
+
+    //   {
+    //     $set: {
+    //       totalDays: {
+    //         $dateDiff: {
+    //           startDate: { $toDate: "$start_date" },
+    //           endDate: { $toDate: "$end_date" },
+    //           unit: "day",
+    //         },
+    //       },
+    //     },
+    //   },
+    // ]);
+
+    //   console.log(NumberOfDays);
+
+    return res.status(201).send(Allbooking);
+
+    // }
   } catch (err) {
     console.log(err);
- return   res.status(400).json({
+    return res.status(400).json({
       message: err.message,
     });
   }
@@ -62,13 +61,30 @@ exports.UpdatebookingByVendor = async (req, res) => {
   }
 };
 
-exports.deletebookingByVendor = async(req,res) => {
-    try {
+exports.deletebookingByVendor = async (req, res) => {
+  try {
     const id = req.params.id;
-    await bookNow.deleteOne({_id: id});
-   return  res.status(200).send({message: "booking deleted "})
-    }catch(err){
-      console.log(err);
-      res.status(400).send({message: err.message})
-    }
-}
+    await bookNow.deleteOne({ _id: id });
+    return res.status(200).send({ message: "booking deleted " });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ message: err.message });
+  }
+};
+
+exports.getAllbookByVendor = async (req, res) => {
+  try {
+    const Allbooking = await bookNow.find();
+    console.log(Allbooking);
+
+    if (!Allbooking || Allbooking.length == 0)
+      return res.status(400).send({ msg: "no booking found" });
+
+    return res.status(201).send(Allbooking);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      message: err.message,
+    });
+  }
+};

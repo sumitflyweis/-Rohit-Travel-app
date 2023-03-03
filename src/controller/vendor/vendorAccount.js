@@ -1,4 +1,4 @@
-var bcrypt = require("bcrypt");
+var bcrypt = require("bcryptjs");
 const path = require("path");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -9,47 +9,21 @@ const SECRET = "demo@1234";
 
 exports.VendorloginProfile = async (req, res) => {
   try {
-    const vendorexists = await vendorSchema.findOne({ phone: req.body.phone });
+    const vendorexists = await vendorSchema.findOne({email: req.body.email});
     console.log(vendorexists);
+    if (!vendorexists || vendorexists.length == 0) 
+      return res.status(404).send({msg:"vendor not found"})
 
-    if (!vendorexists || vendorexists.length == 0) {
-      const otpGen = newOTP.generate(4, {
-        alphabets: false,
-        upperCase: false,
-        specialChar: false,
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.password,
+      vendorexists.password
+    );
+    if (!passwordIsValid) {
+      return res.status(401).send({
+        message: "Wrong password",
       });
 
-      const data = {
-        otp: otpGen,
-        phone: req.body.phone,
-      };
-      const createVendor = await vendorSchema.create(data);
-      console.log(createVendor);
-      const token = jwt.sign(
-        { _id: createVendor._id },
-        process.env.SECRET || SECRET,
-        { expiresIn: "3d" }
-      );
-      res.setHeader("x-api-key", token);
-      return res.status(200).json({
-        createVendor: createVendor,
-        message: "OTP sent successfully",
-        Token: token,
-        message: "token generated",
-        _id: createVendor._id,
-      });
-    } else {
-      const otpGen = newOTP.generate(4, {
-        alphabets: false,
-        upperCase: false,
-        specialChar: false,
-      });
-      vendorexists.otp = otpGen;
-      const updatedVendor = await vendorexists.save();
-
-      console.log(updatedVendor);
-
-      await vendorexists.save();
+    }else{
       const token = jwt.sign(
         { userId: vendorexists._id },
         process.env.SECRET || SECRET,
@@ -57,8 +31,8 @@ exports.VendorloginProfile = async (req, res) => {
       );
       res.setHeader("x-api-key", token);
       return res.status(200).json({
-        otp: otpGen,
-        message: "OTP sent successfully",
+      //  otp: otpGen,
+      //  message: "OTP sent successfully",
         Token: token,
         message: "token generated",
         VendorId: vendorexists._id,
@@ -122,6 +96,9 @@ exports.VendorUpdate = async (req, res) => {
         {
           name: req.body.name,
           email: req.body.email,
+          phone: req.body.phone,
+          password: req.body.password,
+          confirmPassword: req.body.confirmPassword,
         }
       )
       .exec();
@@ -135,6 +112,7 @@ exports.VendorUpdate = async (req, res) => {
     res.status(400).send({ message: err.message });
   }
 };
+
 
 exports.VendorAllUsers = async (req, res) => {
   try {

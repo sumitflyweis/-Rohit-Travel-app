@@ -60,6 +60,29 @@ exports.getpopulartourVendor = async (req, res) => {
   }
 };
 
+
+exports.getAllpopulartourVendor = async (req, res) => {
+  try {
+    const getAllpopulardestination = await tour
+      .find()
+    console.log(getAllpopulardestination);
+    if (!getAllpopulardestination || getAllpopulardestination.length == 0) {
+      return res
+        .status(401)
+        .send({ message: "no data is present in the database" });
+    } else {
+      return res.status(200).json({
+        getAllpopulardestination,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  return  res.status(400).json({
+      message: err.message,
+    });
+  }
+};
+
 exports.UpdatepopulartourVendor = async (req, res) => {
   try {
     const UpdatedData = await tour
@@ -85,7 +108,7 @@ exports.UpdatepopulartourVendor = async (req, res) => {
 exports.deletepopulartourVendor = async (req, res) => {
   try {
     const id = req.params.id;
-    await populartour.deleteOne({ _id: id });
+    await tour.deleteOne({ _id: id });
   return  res.status(200).send({ message: "data deleted " });
   } catch (err) {
     console.log(err);

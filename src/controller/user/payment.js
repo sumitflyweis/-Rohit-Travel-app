@@ -1,7 +1,8 @@
 const path = require("path");
 require("dotenv").config();
-const rasor = require("../../model/CustomerAccount");
+const user = require("../../model/CustomerAccount");
 const bookNow = require("../../model/bookNow");
+const package = require("../../model/packages")
 const payment = require("../../model/payment");
 const razerpay = require("razorpay");
 const crypto = require("crypto");
@@ -21,8 +22,18 @@ exports.CreatePaymentOrder = async (req, res) => {
         message: "bookingId is required",
       });
     }
-    console.log(bookingData.DiscountedPrice);
+    console.log(bookingData.vendorId);
+    console.log(bookingData.userId)
+    console.log(bookingData.packageId)
 
+    const userData = await user.findById({_id:bookingData.userId})
+    if(!userData || userData.length ==0) return res .status(404).json({msg:"userData not found "})
+    console.log(userData)
+
+    const packageData = await package.findById({_id:bookingData.packageId})
+
+    if(!packageData || packageData.length ==0) return res .status(404).json({msg:"package data not found "})
+     console.log(packageData)
     // const data = {
     //     amount: bookingData.DiscountedPrice,
     //     currency: 'INR',
@@ -35,12 +46,16 @@ exports.CreatePaymentOrder = async (req, res) => {
 
     const DBData = {
       bookingId: req.params.id,
-      user: bookingData,
+      user: bookingData.userId,
+      userObject:userData,
+      packageId:bookingData.packageId,
+      package:packageData,
+      vendor:bookingData.vendorId,
       invoice: "123" + req.body.name,
-      payment_Id:/* result.id*/id,
+     // payment_Id:/* result.id*/id,
       amount: bookingData.DiscountedPrice,
      // amount_paid:/* result.amount_paid*/,
-      receipt:/* result.receipt*/id,
+     // receipt:/* result.receipt*/id,
       currency: "INR",
      // receipt: id,
       partial_payment: false,
@@ -68,3 +83,13 @@ exports.GetPaymentsByUserId = async (req, res) => {
    return  res.status(400).json({ message: err.message });
     }
   };
+
+  
+exports.GetAllPayments = async (req, res) => {
+  try {
+    const Data = await payment.find();
+   return  res.status(200).json({ details: Data });
+  } catch (err) {
+ return  res.status(400).json({ message: err.message });
+  }
+};

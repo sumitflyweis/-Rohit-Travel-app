@@ -7,8 +7,6 @@ const tourSchema   = mongoose.Schema({
     touristDestination:[{type:String}],
     rating:{type:String},
 
-  
-   
 })
 
 const populartourModel = mongoose.model('tour', tourSchema); 
